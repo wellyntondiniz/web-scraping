@@ -51,26 +51,31 @@ def coletar(driver):
         preco = result.find_element(By.TAG_NAME, "h3").text
         itens = result.find_elements(By.TAG_NAME, "li")
         
-        persistir_dados(titulo, preco)
+        #persistir_dados(titulo, preco)
 
-        #for item in itens:
-        #    print(item.text)
-        #print('----------------------')
+        for item in itens:
+            print(item.text)
+        print('----------------------')
 
 service = Service("chromedriver.exe")
 driver = webdriver.Chrome(service=service)
 try:
     driver.get("https://glaciosaimobiliaria.com.br/imoveis/mt/sinop/")
 
+    i = 1
     
-    for i in range(10):
+    while True:
         coletar(driver)
+        print(f'Pagina: {i}')
         
         botao = driver.find_element(By.CLASS_NAME, "next")
         
-        #if not botao.is_enabled():
-        #    break
+        is_disabled = botao.get_attribute("disabled")
         
+        if is_disabled:
+            break
+        
+        i += 1
         botao.click()
         
         time.sleep(5)
